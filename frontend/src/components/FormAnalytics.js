@@ -6,20 +6,24 @@ import { Bar, Pie } from 'react-chartjs-2';
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
+// FormAnalytics.js
+
+// ... imports and ChartJS registration ...
+
 function FormAnalytics({ formId }) {
-  const [analyticsData, setAnalyticsData] = useState(null);
-  const [formTitle, setFormTitle] = useState('');
-  const [loading, setLoading] = useState(true);
+// ... state setup ...
 
   useEffect(() => {
     const fetchAnalytics = async () => {
       setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:5000/api/submissions/analytics/${formId}`, {
+        // *** MODIFIED AXIOS CALL (FETCH ANALYTICS): Use ENV variable ***
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/submissions/analytics/${formId}`, {
           headers: { 'x-auth-token': token }
         });
         setAnalyticsData(res.data.analytics);
+// ... rest of the file
         setFormTitle(res.data.formTitle);
       } catch (err) {
         console.error("Error fetching analytics:", err.response.data);

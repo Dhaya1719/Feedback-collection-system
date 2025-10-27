@@ -1,3 +1,5 @@
+// FeedbackForm.js
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -10,8 +12,8 @@ function FeedbackForm() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch the specific form structure from the backend
-    axios.get(`http://localhost:5000/api/forms/${formId}`)
+    // *** MODIFIED AXIOS CALL (FETCH FORM): Use ENV variable ***
+    axios.get(`${process.env.REACT_APP_API_URL}/forms/${formId}`)
       .then(response => {
         setForm(response.data);
         setLoading(false);
@@ -22,32 +24,15 @@ function FeedbackForm() {
       });
   }, [formId]);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    
-    setFormData(prevData => {
-      // Handle Checkboxes (multiple selections)
-      if (type === 'checkbox') {
-        const currentArray = prevData[name] || [];
-        return {
-          ...prevData,
-          [name]: checked 
-            ? [...currentArray, value] // Add value if checked
-            : currentArray.filter(v => v !== value) // Remove value if unchecked
-        };
-      }
-      
-      // Handle Text, Radio, Email, Name (single value inputs)
-      return { ...prevData, [name]: value };
-    });
-  };
+// ... handleChange function ...
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Structure submission data for the backend API
     try {
-      await axios.post(`http://localhost:5000/api/submissions/${formId}`, {
+      // *** MODIFIED AXIOS CALL (SUBMIT FORM): Use ENV variable ***
+      await axios.post(`${process.env.REACT_APP_API_URL}/submissions/${formId}`, {
           // Name and Email are sent at the top level
           name: formData.name,
           email: formData.email,
@@ -62,6 +47,7 @@ function FeedbackForm() {
       });
       setSubmitted(true);
     } catch (error) {
+// ... rest of the component
       console.error("Error submitting form:", error);
       alert('Submission failed. Please try again.');
     }

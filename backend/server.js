@@ -8,7 +8,13 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+
+// *** FINAL SECURITY MODIFICATION: Lock down CORS to only your frontend URL ***
+app.use(cors({
+    origin: 'https://YOUR_VERCEL_FRONTEND_URL', // *** REPLACE WITH ACTUAL VERCEL URL ***
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'],
+}));
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)

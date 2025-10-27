@@ -1,3 +1,5 @@
+// LandingPage.js
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -7,7 +9,8 @@ function LandingPage() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/forms')
+    // *** MODIFIED AXIOS CALL: Use ENV variable ***
+    axios.get(`${process.env.REACT_APP_API_URL}/forms`)
       .then(response => {
         setForms(response.data);
       })
@@ -15,6 +18,8 @@ function LandingPage() {
         console.error("There was an error fetching the forms!", error);
       });
   }, []);
+
+// ... rest of the component
 
   const filteredForms = forms.filter(form =>
     form.title.toLowerCase().includes(searchTerm.toLowerCase())

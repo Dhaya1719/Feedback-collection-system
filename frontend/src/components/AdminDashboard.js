@@ -1,11 +1,12 @@
+// AdminDashboard.js
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import FormAnalytics from './FormAnalytics';
 
 function AdminDashboard() {
-  const [newForm, setNewForm] = useState({ title: '', description: '', questions: [] });
-  const [forms, setForms] = useState([]);
+// ... state setup ...
   const [selectedFormId, setSelectedFormId] = useState(null);
   const navigate = useNavigate();
 
@@ -19,22 +20,22 @@ function AdminDashboard() {
 
   const fetchAdminForms = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/forms/admin/myforms', getAuthHeader());
+      // *** MODIFIED AXIOS CALL (FETCH MY FORMS): Use ENV variable ***
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/forms/admin/myforms`, getAuthHeader());
       setForms(res.data);
     } catch (err) {
       console.error(err.response.data);
-      if (err.response.status === 401) {
-          localStorage.removeItem('token');
-          navigate('/admin/login');
-      }
+// ... error handling
     }
   };
 
   const handleCreateForm = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/forms', newForm, getAuthHeader());
+      // *** MODIFIED AXIOS CALL (CREATE FORM): Use ENV variable ***
+      await axios.post(`${process.env.REACT_APP_API_URL}/forms`, newForm, getAuthHeader());
       alert('Form created successfully!');
+// ... rest of the file
       setNewForm({ title: '', description: '', questions: [] });
       fetchAdminForms();
     } catch (err) {

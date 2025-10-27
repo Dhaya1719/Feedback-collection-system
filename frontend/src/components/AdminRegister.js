@@ -1,3 +1,5 @@
+// AdminRegister.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +16,8 @@ function AdminRegister() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/admin/register', formData);
+      // *** MODIFIED AXIOS CALL: Use ENV variable ***
+      await axios.post(`${process.env.REACT_APP_API_URL}/admin/register`, formData);
       alert('Registration successful! Please login.');
       navigate('/admin/login');
     } catch (err) {
@@ -24,6 +27,7 @@ function AdminRegister() {
   };
 
   return (
+// ... rest of the component
     <div className="container">
       <h2>New Admin Registration</h2>
       <form onSubmit={handleSubmit} className="auth-form">

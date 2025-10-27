@@ -1,3 +1,5 @@
+// AdminLogin.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -15,8 +17,8 @@ function AdminLogin() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      // Send email and password to the backend
-      const res = await axios.post('http://localhost:5000/api/admin/login', formData); 
+      // *** MODIFIED AXIOS CALL: Use ENV variable ***
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/admin/login`, formData); 
       localStorage.setItem('token', res.data.token);
       navigate('/admin/dashboard');
     } catch (err) {
@@ -26,6 +28,7 @@ function AdminLogin() {
   };
 
   return (
+// ... rest of the component
     <div className="container">
       <h2>Admin Login</h2>
       <form onSubmit={handleSubmit} className="auth-form">
